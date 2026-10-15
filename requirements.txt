@@ -1,0 +1,5 @@
+numpy>=1.22
+opencv-python>=4.7
+PyYAML>=6.0
+# Needed only for the real YOLO detector (not for the demo / tests):
+ultralytics>=8.0

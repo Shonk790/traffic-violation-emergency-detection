@@ -1,0 +1,45 @@
+# Template for a real camera. Every value below is a PLACEHOLDER: replace it with
+# measurements from your own scene (use tools/pick_points.py to read pixel coordinates).
+
+detector:
+  type: yolo
+  weights: yolov8n.pt          # larger models (yolov8s/m) are more accurate but slower
+  conf: 0.35
+  tracker: bytetrack.yaml
+
+classes:
+  vehicles: [car, motorcycle, bus, truck]
+  pedestrians: [person]
+  emergency_vehicles: []       # e.g. [ambulance, fire truck] -- needs a custom-trained model
+
+# Speed needs a real ground-plane mapping. Pick 4+ road points visible in the image and
+# measure their real distances (metres), then fill in the homography below.
+calibration:
+  homography:
+    image_points: [[300, 400], [660, 400], [820, 700], [140, 700]]   # pixels (x, y)
+    world_points: [[0, 0], [3.5, 0], [3.5, 10], [0, 10]]             # metres (X, Y)
+
+zones:
+  road: [[0, 350], [1280, 350], [1280, 720], [0, 720]]
+  lanes:
+    - {name: lane_1, polygon: [[0, 350], [640, 350], [640, 720], [0, 720]], direction: [0, 1]}
+  crosswalks: []
+  no_stopping: []              # e.g. - {name: bus_stop, polygon: [[...]], max_seconds: 30}
+
+signal:
+  mode: roi                    # roi = read the lamp colour from the image; manual = timing plan
+  roi: [100, 50, 30, 80]
+  # mode: manual
+  # cycle: [[green, 30], [yellow, 3], [red, 30]]
+
+stop_line:
+  points: [[200, 420], [640, 420]]
+  violation_direction: [0, 1]  # image-space direction of travel that crosses the line
+
+speeding:
+  limit_kmh: 50
+  tolerance_kmh: 5
+  min_frames: 8
+
+output:
+  dir: outputs/run1

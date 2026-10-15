@@ -1,0 +1,28 @@
+# Configuration matching the synthetic demo scene (see tools/make_demo.py).
+detector:
+  type: replay
+  replay_file: demo/demo_detections.json
+
+calibration:
+  meters_per_pixel: 0.05
+
+zones:
+  road: [[0, 205], [960, 205], [960, 335], [0, 335]]
+  lanes:
+    - {name: lane_A, polygon: [[0, 205], [960, 205], [960, 270], [0, 270]], direction: [1, 0]}
+    - {name: lane_B, polygon: [[0, 270], [960, 270], [960, 335], [0, 335]], direction: [-1, 0]}
+
+signal:
+  mode: roi
+  roi: [640, 100, 40, 100]      # x, y, width, height around the traffic light
+
+stop_line:
+  points: [[600, 205], [600, 270]]
+  violation_direction: [1, 0]   # direction of travel that counts as crossing
+
+speeding:
+  limit_kmh: 40
+  min_frames: 8
+
+output:
+  dir: outputs/demo
